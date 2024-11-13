@@ -47,7 +47,8 @@ document.body.appendChild(stop);
 const context = new AudioContext();
 var oscillators = [];
 var playing = [];
-function sound(frequency, volume, type) {
+
+function sound(frequency, volume, type, play) {
 this.start = function () {
 let oscillator = context.createOscillator();
 oscillator.playing = true;
@@ -60,12 +61,19 @@ oscillator.connect(audiogain);
 audiogain.connect(context.destination);
 oscillator.playing = true;
 oscillator.start();
-this.stop = function () {
-oscillator.stop();
+this.stop = function (delay) {
+oscillator.stop(delay);
 }
 }
+if (play != false) {
 this.start();
 }
+}
+
+/*function sequence(volume, type) {
+note1 = new sound(440, volume, type);
+note1.stop(1.5)
+}*/
 </script>
 
 </body>
