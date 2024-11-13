@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<style>
+tbr {
+display: block;
+margin: 7.5px;
+}
+</style>
+</head>
+<body>
+
+<h1>Synth</h1>
+Frequency: <input id="frequency" value="440"><tbr></tbr>
+Volume: <input id="volume" value="0.1"><tbr></tbr>
+<select id="type">
+<option>Sine</option>
+<option value="square">Square</option>
+<option value="sawtooth">Sawtooth</option>
+<option value="triangle">Triangle</option>
+</select><br><br>
+<button onclick="oscillators.push(new sound(document.getElementById('frequency').value, document.getElementById('volume').value, document.getElementById('type').selectedOptions[0].value));
+playing.push(true);
+let start = document.createElement('button');
+start.innerText = 'Start Oscillator #' + oscillators.length;
+start.onclick = function(){
+if (playing[parseInt(start.innerText.replace('Start Oscillator #', '')) - 1] != true) {
+oscillators[parseInt(start.innerText.replace('Start Oscillator #', '')) - 1].start();
+playing[parseInt(stop.innerText.replace('Stop Oscillator #', '')) - 1] = true;
+};
+};
+let stop = document.createElement('button');
+stop.innerText = 'Stop Oscillator #' + oscillators.length;
+stop.onclick = function(){oscillators[parseInt(stop.innerText.replace('Stop Oscillator #', '')) - 1].stop();
+playing[parseInt(stop.innerText.replace('Stop Oscillator #', '')) - 1] = false;
+}
+let span = document.createElement('span');
+span.innerText = ' ';
+document.body.appendChild(document.createElement('tbr'));
+document.body.appendChild(start);
+document.body.appendChild(span);
+document.body.appendChild(stop);
+">Play</button>
+
+<script>
+const context = new AudioContext();
+var oscillators = [];
+var playing = [];
+function sound(frequency, volume, type) {
+this.start = function () {
+let oscillator = context.createOscillator();
+oscillator.playing = true;
+oscillator.type = type;
+oscillator.frequency.value = frequency;
+let audiogain = context.createGain();
+audiogain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+audiogain.gain = volume;
+oscillator.connect(audiogain);
+audiogain.connect(context.destination);
+oscillator.playing = true;
+oscillator.start();
+this.stop = function () {
+oscillator.stop();
+}
+}
+this.start();
+}
+</script>
+
+</body>
+</html>
