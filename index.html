@@ -54,7 +54,7 @@ oscillator.playing = true;
 oscillator.type = type;
 oscillator.frequency.value = frequency;
 let audiogain = context.createGain();
-audiogain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
+//audiogain.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1);
 audiogain.gain = volume;
 oscillator.connect(audiogain);
 audiogain.connect(context.destination);
